@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg:       #FAF9F7;
+    --color-surface:  #FFFFFF;
+    --color-border:   #E8E4DC;
+    --color-forest:   #2E6B2E;
+    --color-brass:    #B8861A;
+    --color-ink:      #201C18;
+    --color-muted:    #7A7068;
+    --color-faint:    #C0B8A8;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: #D5E8D5;
+    color: #0E2710;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 2px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D8D2C6; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #C0B8A8; }
+}
+
+@layer components {
+  /* Staggered animation utility */
+  .stagger-children > * {
+    animation: fadeUp 0.4s ease both;
+  }
+  .stagger-children > *:nth-child(1)  { animation-delay: 0ms; }
+  .stagger-children > *:nth-child(2)  { animation-delay: 60ms; }
+  .stagger-children > *:nth-child(3)  { animation-delay: 120ms; }
+  .stagger-children > *:nth-child(4)  { animation-delay: 180ms; }
+  .stagger-children > *:nth-child(5)  { animation-delay: 240ms; }
+  .stagger-children > *:nth-child(6)  { animation-delay: 300ms; }
+
+  /* Kanban card drag states */
+  .kanban-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  }
+  .kanban-card:hover {
+    transform: translateY(-2px);
+  }
+}
