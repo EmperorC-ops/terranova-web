@@ -78,7 +78,7 @@ async function apiFetch<T>(
 
   const res = await fetch(url, { ...fetchOpts, headers });
 
-  // Expired token — refresh once and retry
+  // Expired token - refresh once and retry
   if (res.status === 401 && token) {
     const ok = await tryRefresh();
     if (ok) {
@@ -214,4 +214,27 @@ export const notificationsApi = {
     }),
   markRead: (id: string) => apiFetch(`/notifications/${id}/read`, { method: "PATCH", body: "{}" }),
   markAllRead: () => apiFetch("/notifications/read-all", { method: "POST", body: "{}" }),
+};
+
+// Deal state machine (Nigerian flow)
+
+export interface DealFlowState {
+  id: string;
+  path: "cash" | "mortgage";
+  state: string;
+  tracks: { property: string | null; buyer: string | null };
+  perfection: string;
+  attribution: { marketerId: string | null; status: string };
+  flags: { insured: boolean; disbursed: boolean };
+  disbursementPolicy: string;
+  moneyEvents: { socket: string; atState: string; amount: number | null; status: string }[];
+}
+export interface DealFlowResponse { deal: DealFlowState; available: string[]; }
+
+export const transitionsApi = {
+  getFlow: (dealId: string) => apiFetch<DealFlowResponse>(`/transitions/${dealId}`),
+  fire: (dealId: string, event: string) =>
+    apiFetch<{ ok: boolean; deal: DealFlowState; available: string[] }>("/transitions", {
+      method: "POST", body: JSON.stringify({ dealId, event }),
+    }),
 };

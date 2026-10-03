@@ -14,6 +14,7 @@ import { useDealRealtime } from "@/lib/hooks/realtime";
 import {
   Card, Button, Badge, Skeleton, EmptyState, Modal, Textarea,
 } from "@/components/ui";
+import { DealFlowPanel } from "@/components/deals/DealFlowPanel";
 import {
   cn, formatCurrency, formatDate, formatRelative,
   STAGE_CONFIG, ACTIVE_STAGES,
@@ -241,7 +242,7 @@ export default function DealDetailPage() {
         </Link>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-display text-3xl text-stone-900">{(deal as any).property?.name ?? "—"}</h1>
+            <h1 className="font-display text-3xl text-stone-900">{(deal as any).property?.name ?? "-"}</h1>
             <div className="flex items-center gap-3 mt-2">
               <Badge color={cfg.color} bg={cfg.bg}>{cfg.label}</Badge>
               <span className="text-stone-500 text-sm font-body">{(deal as any).property?.address}</span>
@@ -261,6 +262,8 @@ export default function DealDetailPage() {
         <p className="text-xs font-medium uppercase tracking-wider text-stone-500 font-body mb-3">Stage Progress</p>
         <StageStepper currentStage={deal.stage} dealId={id} />
       </Card>
+
+      <DealFlowPanel dealId={id} />
 
       {/* Main grid */}
       <div className="grid lg:grid-cols-3 gap-6">
