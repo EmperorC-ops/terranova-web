@@ -81,3 +81,18 @@ export const DEAL_STAGES: DealStage[] = [
 export const ACTIVE_STAGES: DealStage[] = [
   "lead", "site_visit", "negotiation", "due_diligence",
 ];
+
+// Derived deal status: the engine state is the single source of truth.
+// Every engine state maps to one coarse status bucket shown in the UI.
+export const DEAL_STATUS = [
+  { key: "opening",  label: "Opening",         color: "text-stone-600",  bg: "bg-stone-100",  dot: "bg-stone-400",  states: ["Draft","TitleVerified","OfferIssued"] },
+  { key: "checks",   label: "In Checks",       color: "text-brass-700",  bg: "bg-brass-50",   dot: "bg-brass-400",  states: ["DueDiligence","Cleared","InTracks","Approved"] },
+  { key: "legal",    label: "Legal & Closing", color: "text-blue-700",   bg: "bg-blue-50",    dot: "bg-blue-400",   states: ["DeedsExecuted","Perfecting","Perfected"] },
+  { key: "closed",   label: "Closed",          color: "text-forest-700", bg: "bg-forest-50",  dot: "bg-forest-400", states: ["Closed","CommissionPaid"] },
+  { key: "rejected", label: "Rejected",        color: "text-rose-700",   bg: "bg-rose-50",    dot: "bg-rose-400",   states: ["Rejected"] },
+] as const;
+
+export function dealStatus(smState?: string | null) {
+  const s = smState ?? "Draft";
+  return DEAL_STATUS.find(b => (b.states as readonly string[]).includes(s)) ?? DEAL_STATUS[0];
+}

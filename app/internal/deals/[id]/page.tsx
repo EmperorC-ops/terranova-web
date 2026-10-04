@@ -17,7 +17,7 @@ import {
 import { DealFlowPanel } from "@/components/deals/DealFlowPanel";
 import {
   cn, formatCurrency, formatDate, formatRelative,
-  STAGE_CONFIG, ACTIVE_STAGES,
+  STAGE_CONFIG, ACTIVE_STAGES, dealStatus,
 } from "@/lib/utils";
 import type { DealStage } from "@/lib/types";
 
@@ -232,6 +232,7 @@ export default function DealDetailPage() {
   );
 
   const cfg = STAGE_CONFIG[deal.stage];
+  const st = dealStatus((deal as any).sm_state);
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
@@ -244,7 +245,7 @@ export default function DealDetailPage() {
           <div>
             <h1 className="font-display text-3xl text-stone-900">{(deal as any).property?.name ?? "-"}</h1>
             <div className="flex items-center gap-3 mt-2">
-              <Badge color={cfg.color} bg={cfg.bg}>{cfg.label}</Badge>
+              <Badge color={st.color} bg={st.bg}>{st.label}</Badge>
               <span className="text-stone-500 text-sm font-body">{(deal as any).property?.address}</span>
             </div>
           </div>
@@ -256,12 +257,6 @@ export default function DealDetailPage() {
           </div>
         </div>
       </div>
-
-      {/* Stage stepper */}
-      <Card className="p-5">
-        <p className="text-xs font-medium uppercase tracking-wider text-stone-500 font-body mb-3">Stage Progress</p>
-        <StageStepper currentStage={deal.stage} dealId={id} />
-      </Card>
 
       <DealFlowPanel dealId={id} />
 
